@@ -1,0 +1,11 @@
+{
+  "name": "SuprBuild",
+  "description": "SuprBuild is a software studio and AI-native cloud infrastructure provider. We design, build, and ship products.",
+  "version": "1.0.0",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuprBuild Weekly Newsletter</title>
+  <style>
+    body, p, h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #f6f8fa;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.62;
+      color: #24292e;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border: 1px solid #e1e4e8;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #502bfb;
+      color: #ffffff !important;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 12px;
+      padding: 10px 22px;
+      border-radius: 0px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .btn:hover {
+      background-color: #3e1ecc;
+    }
+    .badge {
+      display: inline-block;
+      font-family: monospace;
+      background-color: #f5f3ff;
+      color: #502bfb;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 3px 8px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    @media only screen and (max-width: 600px) {
+      .container {
+        width: 100% !important;
+        border-left: none !important;
+        border-right: none !important;
+      }
+      .padding-mobile {
+        padding: 30px 16px !important;
+      }
+    }
+  </style>
+</head>
+<body style="background-color: #f6f8fa; margin: 0; padding: 40px 0;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+      <td align="center">
+        <!-- Newsletter Container -->
+        <table class="container" role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border: 1px solid #e1e4e8;">
+          
+          <!-- Header Bar -->
+          <tr>
+            <td align="left" style="padding: 32px 40px 20px 40px; border-bottom: 1px solid #eaecef;" class="padding-mobile">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td>
+                    <span style="font-weight: 800; font-size: 16px; color: #1a1a1a; letter-spacing: -0.02em;">
+                      <span style="display: inline-block; width: 20px; height: 20px; background-color: #502bfb; vertical-align: middle; margin-right: 6px; position: relative;">
+                        <span style="display: block; position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px; background-color: #ffffff;"></span>
+                      </span>
+                      SuprBuild Weekly
+                    </span>
+                  </td>
+                  <td align="right" style="font-family: monospace; font-size: 11px; color: #586069;">
+                    Issue #018 • July 2026
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Editorial Headline Block -->
+          <tr>
+            <td align="left" style="padding: 40px 40px 24px 40px; border-bottom: 1px solid #f1f3f5;" class="padding-mobile">
+              <span class="badge" style="margin-bottom: 12px;">Cloud Architecture</span>
+              <h1 style="font-size: 24px; font-weight: 800; line-height: 1.3; color: #111827; letter-spacing: -0.025em; margin: 0 0 14px 0;">
+                Deploying Multi-Region Edge Microservices with Robust Billing Sync
+              </h1>
+              <p style="font-size: 14.5px; color: #444d56; line-height: 1.6; margin: 0 0 18px 0;">
+                As contemporary web services scale, pushing database read/write limits and computation directly to the edge yields phenomenal sub-10ms user responsiveness. Yet, managing robust subscription checkpoints across geographic bounds remains a substantial challenge.
+              </p>
+              <p style="font-size: 14px; color: #444d56; line-height: 1.6; margin: 0 0 24px 0;">
+                In this issue, we dissect our multi-region container design on Cloud Run, synchronized using global key-value clusters and real-time Paddle client webhook listeners to ensure billing logic is always immediate, exact, and local to the user session.
+              </p>
+              <a href="https://suprbuild.com/blog/multi-region-edge" class="btn">Read the Full Blueprint</a>
+            </td>
+          </tr>
+
+          <!-- Section: Curated Links / Industry Tech -->
+          <tr>
+            <td align="left" style="padding: 40px 40px; background-color: #fafbfc; border-bottom: 1px solid #eaecef;" class="padding-mobile">
+              <h2 style="font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #6a737d; margin: 0 0 20px 0;">
+                Weekly Curated Tech Blueprints
+              </h2>
+              
+              <!-- Curated Link 1 -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 24px;">
+                <tr>
+                  <td style="vertical-align: top;">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #0366d6; margin: 0 0 4px 0;">
+                      <a href="https://suprbuild.com/blueprints/vapi-integration" style="color: #502bfb; text-decoration: none; border-bottom: 1px solid rgba(80, 43, 251, 0.2);">How to Orchestrate Vapi Voice Agents via n8n Workflows</a>
+                    </h3>
+                    <p style="font-size: 13px; color: #586069; margin: 0; line-height: 1.5;">
+                      A step-by-step tutorial outlining how to set up an interactive web calling widget that routes transcripts, custom variables, and active scoping call requests directly into backend workflows.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Curated Link 2 -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 24px;">
+                <tr>
+                  <td style="vertical-align: top;">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #0366d6; margin: 0 0 4px 0;">
+                      <a href="https://suprbuild.com/blueprints/paddle-billing" style="color: #502bfb; text-decoration: none; border-bottom: 1px solid rgba(80, 43, 251, 0.2);">Paddle Checkout: Client-side Overlay vs Full-page Direct Flows</a>
+                    </h3>
+                    <p style="font-size: 13px; color: #586069; margin: 0; line-height: 1.5;">
+                      Which conversion flow converts best for complex B2B plans? An analytical review comparing native Paddle overlays with transactional localized portal templates.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Curated Link 3 -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0;">
+                <tr>
+                  <td style="vertical-align: top;">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #0366d6; margin: 0 0 4px 0;">
+                      <a href="https://suprbuild.com/blueprints/docker-configs" style="color: #502bfb; text-decoration: none; border-bottom: 1px solid rgba(80, 43, 251, 0.2);">Optimized Multi-Stage Dockerfiles for React/Vite SPAs</a>
+                    </h3>
+                    <p style="font-size: 13px; color: #586069; margin: 0; line-height: 1.5;">
+                      Minimize your build artifact size. Learn how multi-stage caching and custom nginx reverse proxies reduce image payloads down to under 12MB.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Highlight block -->
+          <tr>
+            <td align="left" style="padding: 40px 40px;" class="padding-mobile">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f5f3ff; border: 1px solid #dcd3ff; padding: 24px;">
+                <tr>
+                  <td>
+                    <h4 style="font-size: 14px; font-weight: 700; color: #111827; margin: 0 0 6px 0;">Build with SuprBuild Studio</h4>
+                    <p style="font-size: 12.5px; color: #4b5563; margin: 0 0 16px 0; line-height: 1.5;">
+                      Looking to build customized AI-native tools, SaaS portals, or scalable web platforms? Let our engineers construct and deploy your production-ready workspace.
+                    </p>
+                    <a href="https://suprbuild.com#scoping" style="font-size: 11px; font-weight: bold; color: #502bfb; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em;">Talk to our virtual scoping assistant &rarr;</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer Area -->
+          <tr>
+            <td align="center" style="background-color: #111827; padding: 40px 40px; border-top: 1px solid #1f2937;" class="padding-mobile">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td align="left" style="font-size: 11px; font-family: monospace; color: #9ca3af; line-height: 1.6;">
+                    © 2026 SuprBuild LLC. All rights reserved. <br />
+                    100 Pine Street, San Francisco, CA 94111 <br /><br />
+                    You are receiving this because you subscribed to updates on SuprBuild. <br />
+                    <a href="https://suprbuild.com/unsubscribe" style="color: #c0b2ff; text-decoration: underline;">Unsubscribe from these emails</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
