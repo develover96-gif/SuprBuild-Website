@@ -5,6 +5,12 @@ import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
+  
+  const getEnvVal = (key: string) => {
+    const foundKey = Object.keys(env).find(k => k.trim() === key.trim());
+    return foundKey ? (env[foundKey] || '').trim() : '';
+  };
+
   return {
     plugins: [react(), tailwindcss()],
     resolve: {
@@ -14,19 +20,19 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       '__PADDLE_ENV__': JSON.stringify(env),
-      'process.env.PADDLE_CLIENT_TOKEN': JSON.stringify(env.PADDLE_CLIENT_TOKEN || ''),
-      'process.env.VITE_PADDLE_CLIENT_TOKEN': JSON.stringify(env.VITE_PADDLE_CLIENT_TOKEN || ''),
-      'process.env.VITE_PADDLE_PRICE_BUILD_SINGLE': JSON.stringify(env.VITE_PADDLE_PRICE_BUILD_SINGLE || ''),
-      'process.env.VITE_PADDLE_PRICE_LAUNCH_SINGLE': JSON.stringify(env.VITE_PADDLE_PRICE_LAUNCH_SINGLE || ''),
-      'process.env.VITE_PADDLE_PRICE_TEAM_MONTHLY': JSON.stringify(env.VITE_PADDLE_PRICE_TEAM_MONTHLY || ''),
-      'process.env.VITE_PADDLE_PRICE_TEAM_YEARLY': JSON.stringify(env.VITE_PADDLE_PRICE_TEAM_YEARLY || ''),
-      'process.env.VAPI_PUBLIC_API_KRY': JSON.stringify(env.VAPI_PUBLIC_API_KRY || ''),
-      'process.env.VAPI_PUBLIC_API_KEY': JSON.stringify(env.VAPI_PUBLIC_API_KEY || ''),
-      'process.env.VITE_VAPI_PUBLIC_API_KEY': JSON.stringify(env.VITE_VAPI_PUBLIC_API_KEY || ''),
-      'process.env.VAPI_PUBLIC_KEY': JSON.stringify(env.VAPI_PUBLIC_KEY || env.VAPI_PUBLIC_KEY?.trim() || ''),
-      'process.env.VAPI_ASSISTANT_ID': JSON.stringify(env.VAPI_ASSISTANT_ID || ''),
-      'process.env.VITE_VAPI_ASSISTANT_ID': JSON.stringify(env.VITE_VAPI_ASSISTANT_ID || ''),
-      'process.env.ASSISTANT_ID': JSON.stringify(env.ASSISTANT_ID || env.ASSISTANT_ID?.trim() || ''),
+      'process.env.PADDLE_CLIENT_TOKEN': JSON.stringify(getEnvVal('PADDLE_CLIENT_TOKEN')),
+      'process.env.VITE_PADDLE_CLIENT_TOKEN': JSON.stringify(getEnvVal('VITE_PADDLE_CLIENT_TOKEN')),
+      'process.env.VITE_PADDLE_PRICE_BUILD_SINGLE': JSON.stringify(getEnvVal('VITE_PADDLE_PRICE_BUILD_SINGLE')),
+      'process.env.VITE_PADDLE_PRICE_LAUNCH_SINGLE': JSON.stringify(getEnvVal('VITE_PADDLE_PRICE_LAUNCH_SINGLE')),
+      'process.env.VITE_PADDLE_PRICE_TEAM_MONTHLY': JSON.stringify(getEnvVal('VITE_PADDLE_PRICE_TEAM_MONTHLY')),
+      'process.env.VITE_PADDLE_PRICE_TEAM_YEARLY': JSON.stringify(getEnvVal('VITE_PADDLE_PRICE_TEAM_YEARLY')),
+      'process.env.VAPI_PUBLIC_API_KRY': JSON.stringify(getEnvVal('VAPI_PUBLIC_API_KRY')),
+      'process.env.VAPI_PUBLIC_API_KEY': JSON.stringify(getEnvVal('VAPI_PUBLIC_API_KEY')),
+      'process.env.VITE_VAPI_PUBLIC_API_KEY': JSON.stringify(getEnvVal('VITE_VAPI_PUBLIC_API_KEY')),
+      'process.env.VAPI_PUBLIC_KEY': JSON.stringify(getEnvVal('VAPI_PUBLIC_KEY')),
+      'process.env.VAPI_ASSISTANT_ID': JSON.stringify(getEnvVal('VAPI_ASSISTANT_ID')),
+      'process.env.VITE_VAPI_ASSISTANT_ID': JSON.stringify(getEnvVal('VITE_VAPI_ASSISTANT_ID')),
+      'process.env.ASSISTANT_ID': JSON.stringify(getEnvVal('ASSISTANT_ID')),
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.

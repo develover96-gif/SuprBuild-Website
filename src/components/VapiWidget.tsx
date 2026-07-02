@@ -51,7 +51,7 @@ const getVapiAssistantId = (): string => {
          getEnvVal('VITE_ASSISTANT_ID', '') || 
          getEnvVal('VAPI_ASSISTANT_ID', '') || 
          getEnvVal('VITE_VAPI_ASSISTANT_ID', '') || 
-         '';
+         'cbfa19e6-660f-4f4f-a9ae-87985e900838';
 };
 
 interface VapiWidgetProps {
@@ -159,7 +159,7 @@ export default function VapiWidget({ isOpen, onClose, onToggleOpen, isChatOpen =
       if (assistantId) {
         await vapiRef.current.start(assistantId);
       } else {
-        await vapiRef.current.start();
+        throw new Error('Vapi Assistant ID is not configured. Please define ASSISTANT_ID in your environment variables.');
       }
     } catch (err: any) {
       setVapiStatus('error');
