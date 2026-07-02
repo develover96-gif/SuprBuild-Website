@@ -54,6 +54,39 @@ const getVapiAssistantId = (): string => {
          '12598985-d239-412c-b129-a9111f58f588';
 };
 
+const formatVapiError = (err: any): string => {
+  if (!err) return 'An unknown error occurred during the voice assistant call.';
+
+  let msg = '';
+  if (typeof err === 'string') {
+    msg = err;
+  } else if (err && err.message) {
+    msg = err.message;
+  } else if (err && typeof err === 'object') {
+    try {
+      msg = err.error?.message || err.message || JSON.stringify(err);
+    } catch (e) {
+      msg = 'An unexpected Vapi SDK error occurred.';
+    }
+  }
+
+  const msgLower = msg.toLowerCase();
+
+  if (msgLower.includes('failed to fetch') || msgLower.includes('fetch') || msgLower.includes('networkerror')) {
+    return 'Failed to fetch: Unable to connect to the Vapi server. This usually happens when the VAPI_PUBLIC_KEY is invalid, your internet/firewall blocks WebRTC websocket handshakes, or an active browser ad-blocker or privacy shield is filtering outbound traffic.';
+  }
+
+  if (msgLower.includes('meeting has ended') || msgLower.includes('meeting ended') || msgLower.includes('meeting has been ended')) {
+    return 'Meeting has ended: The voice call ended immediately upon initiation. This occurs when either your ASSISTANT_ID is invalid, deleted, or mismatched with your VAPI_PUBLIC_KEY, or your Vapi developer account has run out of trial credits / hit active billing limits.';
+  }
+
+  if (msgLower.includes('mic') || msgLower.includes('permission') || msgLower.includes('getusermedia') || msgLower.includes('notallowederror')) {
+    return 'Microphone permission denied: Microphone access was blocked by the browser. Please check browser permission prompts, ensure your device has an active microphone, or click "Open App in New Tab" to bypass sandboxing constraints.';
+  }
+
+  return msg;
+};
+
 interface VapiWidgetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -115,7 +148,7 @@ export default function VapiWidget({ isOpen, onClose, onToggleOpen, isChatOpen =
       vapi.on('error', (err: any) => {
         console.error('Vapi SDK Error:', err);
         setVapiStatus('error');
-        setErrorMessage(err?.message || 'Call failed. Make sure your browser has microphone permissions allowed.');
+        setErrorMessage(formatVapiError(err));
         setCallActive(false);
         setVolumeLevel(0);
       });
@@ -178,7 +211,7 @@ export default function VapiWidget({ isOpen, onClose, onToggleOpen, isChatOpen =
       }
     } catch (err: any) {
       setVapiStatus('error');
-      setErrorMessage(err?.message || 'Call failed. Make sure your browser has microphone permissions allowed.');
+      setErrorMessage(formatVapiError(err));
     }
   };
 
@@ -286,25 +319,41 @@ export default function VapiWidget({ isOpen, onClose, onToggleOpen, isChatOpen =
 
           {/* Error block if any */}
           {errorMessage && (
-            <div className="bg-destructive/10 border border-destructive/20 text-destructive text-xs p-4 flex flex-col gap-3">
+            <div className="bg-destructive/10 border border-destructive/20 text-destructive text-xs p-4 flex flex-col gap-4">
               <div className="flex gap-2.5 items-start">
-                <AlertCircle className="w-4 h-4 flex-none mt-0.5 text-destructive" />
-                <div className="leading-relaxed font-medium">{errorMessage}</div>
+                <AlertCircle className="w-4.5 h-4.5 flex-none mt-0.5 text-destructive" />
+                <div className="leading-relaxed font-semibold">{errorMessage}</div>
               </div>
-              {(errorMessage.toLowerCase().includes('mic') || 
-                errorMessage.toLowerCase().includes('permission') || 
-                errorMessage.toLowerCase().includes('iframe') || 
-                errorMessage.toLowerCase().includes('browser') || 
-                errorMessage.toLowerCase().includes('restrict')) && (
+
+              {/* Troubleshooting Checklist */}
+              <div className="border-t border-destructive/20 pt-3 flex flex-col gap-2">
+                <p className="font-semibold uppercase tracking-wider text-[10px] text-destructive/80">Troubleshooting Checklist:</p>
+                <ul className="list-disc pl-4 space-y-1 text-[11px] text-destructive/90 leading-relaxed">
+                  <li>
+                    Verify that <code className="font-mono bg-destructive/15 px-1 py-0.5 rounded text-[10px]">VAPI_PUBLIC_KEY</code> and <code className="font-mono bg-destructive/15 px-1 py-0.5 rounded text-[10px]">ASSISTANT_ID</code> are configured correctly in your environment variables.
+                  </li>
+                  <li>
+                    Check your Vapi Dashboard to make sure the assistant exists, is published, and that your account has active trial credits or billing minutes.
+                  </li>
+                  <li>
+                    Aggressive Ad-Blockers or Brave Shields may block WebRTC WebSocket connections. Try temporarily pausing them.
+                  </li>
+                  <li>
+                    Ensure microphone permissions are granted. In some browsers, WebRTC/mic access is disabled inside sandboxed iframes.
+                  </li>
+                </ul>
+              </div>
+
+              <div className="flex flex-wrap gap-2 pt-1">
                 <a
                   href={window.location.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="self-start px-3 py-1.5 bg-destructive text-white hover:bg-destructive/95 hover:scale-[1.02] text-[11px] font-semibold transition-all shadow-sm inline-block text-center"
+                  className="px-3.5 py-2 bg-destructive text-white hover:bg-destructive/95 hover:scale-[1.01] text-[11px] font-bold transition-all shadow-sm inline-flex items-center gap-1.5"
                 >
                   Open App in New Tab
                 </a>
-              )}
+              </div>
             </div>
           )}
 
