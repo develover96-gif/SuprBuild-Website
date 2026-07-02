@@ -154,6 +154,21 @@ export default function VapiWidget({ isOpen, onClose, onToggleOpen, isChatOpen =
     }
     try {
       setVapiStatus('connecting');
+
+      // Pre-emptive check for microphone support & permissions inside potentially restricted iframe
+      if (!navigator?.mediaDevices?.getUserMedia) {
+        throw new Error('Your browser either does not support microphone access, or this preview iframe is restricting it. Please click "Open in New Tab" below to grant permissions and use voice support.');
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // Stop the temporary track to release the device so Vapi SDK can open its own session cleanly
+        stream.getTracks().forEach(track => track.stop());
+      } catch (micErr: any) {
+        console.error('Microphone pre-check failed:', micErr);
+        throw new Error('Microphone permission denied or restricted. Please allow browser microphone access, or click "Open in New Tab" to use the voice assistant.');
+      }
+
       // Start call using the public key / configured assistant
       const assistantId = getVapiAssistantId();
       if (assistantId) {
@@ -163,7 +178,7 @@ export default function VapiWidget({ isOpen, onClose, onToggleOpen, isChatOpen =
       }
     } catch (err: any) {
       setVapiStatus('error');
-      setErrorMessage(err?.message || 'Could not initiate microphone access stream.');
+      setErrorMessage(err?.message || 'Call failed. Make sure your browser has microphone permissions allowed.');
     }
   };
 
@@ -271,9 +286,24 @@ export default function VapiWidget({ isOpen, onClose, onToggleOpen, isChatOpen =
 
           {/* Error block if any */}
           {errorMessage && (
-            <div className="bg-destructive/10 border border-destructive/20 text-destructive text-xs p-3.5 flex gap-2.5 items-start">
-              <AlertCircle className="w-4 h-4 flex-none mt-0.5" />
-              <div className="leading-relaxed">{errorMessage}</div>
+            <div className="bg-destructive/10 border border-destructive/20 text-destructive text-xs p-4 flex flex-col gap-3">
+              <div className="flex gap-2.5 items-start">
+                <AlertCircle className="w-4 h-4 flex-none mt-0.5 text-destructive" />
+                <div className="leading-relaxed font-medium">{errorMessage}</div>
+              </div>
+              {(errorMessage.toLowerCase().includes('mic') || 
+                errorMessage.toLowerCase().includes('permission') || 
+                errorMessage.toLowerCase().includes('iframe') || 
+                errorMessage.toLowerCase().includes('browser') || 
+                errorMessage.toLowerCase().includes('restrict')) && (
+                <button
+                  type="button"
+                  onClick={() => window.open(window.location.href, '_blank')}
+                  className="self-start px-3 py-1.5 bg-destructive text-white hover:bg-destructive/95 hover:scale-[1.02] text-[11px] font-semibold transition-all shadow-sm"
+                >
+                  Open App in New Tab
+                </button>
+              )}
             </div>
           )}
 
