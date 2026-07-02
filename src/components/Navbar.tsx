@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Sun, Moon, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface NavbarProps {
   onOpenVoice: () => void;
@@ -18,6 +19,18 @@ export default function Navbar({ onOpenVoice, onOpenChat }: NavbarProps) {
       document.documentElement.classList.remove('dark');
     }
   }, [isDark]);
+
+  // Disable body scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
 
   const toggleTheme = () => setIsDark(!isDark);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -73,57 +86,104 @@ export default function Navbar({ onOpenVoice, onOpenChat }: NavbarProps) {
         </div>
       </div>
 
-      {/* Mobile Links Dropdown Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-md px-6 py-4 flex flex-col gap-1.5">
-          <a 
-            href="#/services" 
-            onClick={() => setIsMenuOpen(false)}
-            className="px-3 py-2.5 text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors border-b border-border/40"
-          >
-            Services
-          </a>
-          <a 
-            href="#/pricing" 
-            onClick={() => setIsMenuOpen(false)}
-            className="px-3 py-2.5 text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors border-b border-border/40"
-          >
-            Pricing
-          </a>
-          <a 
-            href="#/infrastructure" 
-            onClick={() => setIsMenuOpen(false)}
-            className="px-3 py-2.5 text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors border-b border-border/40"
-          >
-            Infrastructure
-          </a>
-          <a 
-            href="#/about" 
-            onClick={() => setIsMenuOpen(false)}
-            className="px-3 py-2.5 text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors border-b border-border/40"
-          >
-            About the Company
-          </a>
-          <a 
-            href="#/contact" 
-            onClick={() => setIsMenuOpen(false)}
-            className="px-3 py-2.5 text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors border-b border-border/40"
-          >
-            Contact Us
-          </a>
-          
-          {/* Mobile-only CTA */}
-          <div className="pt-4 flex flex-col gap-2">
-            <a
-              href="#/contact"
+      {/* Mobile Sidebar & Overlay with Slide-from-Left Animation */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            {/* Dark Backdrop overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               onClick={() => setIsMenuOpen(false)}
-              className="sm:hidden w-full text-center font-medium text-[13px] bg-primary text-primary-foreground hover:opacity-90 py-3 border border-transparent transition-all"
+              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs md:hidden"
+            />
+
+            {/* Sidebar Slide-out Panel */}
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+              className="fixed inset-y-0 left-0 z-50 w-[290px] max-w-[85vw] bg-background border-r border-border p-6 flex flex-col justify-between md:hidden shadow-2xl h-screen"
             >
-              Start a build
-            </a>
-          </div>
-        </div>
-      )}
+              <div className="flex flex-col gap-8">
+                {/* Drawer Header */}
+                <div className="flex items-center justify-between">
+                  <a
+                    href="#/"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center gap-2.5 font-extrabold text-[15.5px] tracking-tight text-foreground select-none"
+                  >
+                    <span className="w-5 h-5 bg-primary rounded-none flex items-center justify-center text-primary-foreground font-black text-[11px] leading-none">
+                      SB
+                    </span>
+                    SuprBuild
+                  </a>
+                  <button
+                    onClick={() => setIsMenuOpen(false)}
+                    className="w-[34px] h-[34px] border border-border bg-background flex items-center justify-center text-muted-foreground hover:border-ring hover:text-foreground transition-all duration-200"
+                    aria-label="Close Menu"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Drawer Links */}
+                <nav className="flex flex-col gap-1.5">
+                  <a
+                    href="#/services"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="px-3 py-3 text-[14.5px] font-medium text-muted-foreground hover:text-foreground hover:bg-accent/40 transition-colors border-b border-border/40"
+                  >
+                    Services
+                  </a>
+                  <a
+                    href="#/pricing"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="px-3 py-3 text-[14.5px] font-medium text-muted-foreground hover:text-foreground hover:bg-accent/40 transition-colors border-b border-border/40"
+                  >
+                    Pricing
+                  </a>
+                  <a
+                    href="#/infrastructure"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="px-3 py-3 text-[14.5px] font-medium text-muted-foreground hover:text-foreground hover:bg-accent/40 transition-colors border-b border-border/40"
+                  >
+                    Infrastructure
+                  </a>
+                  <a
+                    href="#/about"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="px-3 py-3 text-[14.5px] font-medium text-muted-foreground hover:text-foreground hover:bg-accent/40 transition-colors border-b border-border/40"
+                  >
+                    About the Company
+                  </a>
+                  <a
+                    href="#/contact"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="px-3 py-3 text-[14.5px] font-medium text-muted-foreground hover:text-foreground hover:bg-accent/40 transition-colors"
+                  >
+                    Contact Us
+                  </a>
+                </nav>
+              </div>
+
+              {/* Drawer Footer CTA */}
+              <div className="pt-6 border-t border-border/50">
+                <a
+                  href="#/contact"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="w-full text-center inline-flex items-center justify-center font-semibold text-[13.5px] bg-primary text-primary-foreground hover:opacity-90 py-3.5 transition-all"
+                >
+                  Start a build
+                </a>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
