@@ -43,7 +43,7 @@ const getVapiToken = (): string => {
          getEnvVal('VITE_VAPI_PUBLIC_API_KEY', '') || 
          getEnvVal('VAPI_PUBLIC_API_KRY', '') || 
          getEnvVal('VITE_VAPI_PUBLIC_API_KRY', '') || 
-         '94d82d33-fa09-4819-b0cf-4d61edfa4a9f';
+         'bfd85ada-4b99-4259-8b7f-e91cf678d514';
 };
 
 const getVapiAssistantId = (): string => {
@@ -51,7 +51,7 @@ const getVapiAssistantId = (): string => {
          getEnvVal('VITE_ASSISTANT_ID', '') || 
          getEnvVal('VAPI_ASSISTANT_ID', '') || 
          getEnvVal('VITE_VAPI_ASSISTANT_ID', '') || 
-         'cbfa19e6-660f-4f4f-a9ae-87985e900838';
+         '12598985-d239-412c-b129-a9111f58f588';
 };
 
 interface VapiWidgetProps {
@@ -296,13 +296,14 @@ export default function VapiWidget({ isOpen, onClose, onToggleOpen, isChatOpen =
                 errorMessage.toLowerCase().includes('iframe') || 
                 errorMessage.toLowerCase().includes('browser') || 
                 errorMessage.toLowerCase().includes('restrict')) && (
-                <button
-                  type="button"
-                  onClick={() => window.open(window.location.href, '_blank')}
-                  className="self-start px-3 py-1.5 bg-destructive text-white hover:bg-destructive/95 hover:scale-[1.02] text-[11px] font-semibold transition-all shadow-sm"
+                <a
+                  href={window.location.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="self-start px-3 py-1.5 bg-destructive text-white hover:bg-destructive/95 hover:scale-[1.02] text-[11px] font-semibold transition-all shadow-sm inline-block text-center"
                 >
                   Open App in New Tab
-                </button>
+                </a>
               )}
             </div>
           )}
